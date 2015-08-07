@@ -125,14 +125,14 @@
         'click',
         $.proxy(this.mapClicked, this)
       );
- 
+
       // add dragend even listener on the map
       google.maps.event.addListener(
         this.map,
         'dragend',
         $.proxy(this.mapDragged, this)
       );
-      
+
       // add idle even listener on the map
       google.maps.event.addListener(
         this.map,
@@ -491,6 +491,13 @@
         value = value.toUrlValue();
       }
 
+		if ($element.attr(this.options.detailsAttribute) == 'formatted_phone_number') {
+			// phonenumber 가 비었으면 기존 전화번호를 없애지 않는다
+			if (!value) {
+				return;
+			}
+		}
+
       if ($element.is(":input")){
         $element.val(value);
       } else {
@@ -506,7 +513,7 @@
     mapClicked: function(event) {
         this.trigger("geocode:click", event.latLng);
     },
-   
+
     // Fire the "geocode:mapdragged" event and pass the current position of the map center.
     mapDragged: function(event) {
       this.trigger("geocode:mapdragged", this.map.getCenter());
